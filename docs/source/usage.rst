@@ -29,6 +29,10 @@ To use BROADCAST, the following Python packages are required:
 * petsc4py (installed in *complex*)
 * slepc4py (installed in *complex*)
 
+.. note::
+
+   Developers which update the FORTRAN sources of BROADCAST need the Algorithmic Differentation tool **TAPENADE**. The `tapenade <http://www-tapenade.inria.fr:8080/tapenade/index.jsp>`_ web server can be used to linearise FORTRAN routines without requiring to install TAPENADE.
+
 An example of installation of the required packages is shown below:
 
 .. code-block:: console
@@ -83,7 +87,7 @@ For example, if the function :py:func:`bc_no_reflexion_2d` inside *borders* has 
 
    (ENV_NAME) $ python compile_borders.py
 
-Then, to linearise a routine, run the associated program *tap_tangent.py* and compile again the associated source.
+Then, to linearise a routine, run the associated program *tap_tangent.py* (tap* files linearise through TAPENADE software the associated routines) and compile again the associated source.
 
 .. code-block:: console
 
