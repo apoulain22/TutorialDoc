@@ -49,14 +49,18 @@ Implementation
 --------------
 
 .. figure:: org1.png
-   :scale: 49%
-   :align: left
+   :scale: 90%
+   :align: center
    :alt: organisation of the code
 
 .. figure:: org2.png
-   :scale: 49%
-   :align: right
+   :scale: 90%
+   :align: center
    :alt: organisation of the code
+
+
+Program files
+--------------
 
 List of the programs available: :ref:`listprogram`.
 
