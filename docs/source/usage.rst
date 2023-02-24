@@ -19,7 +19,7 @@ Linear systems are solved through PETSc/SLEPc libraries.
 Installation
 ------------
 
-To use BROADCAST; the following Python packages are required:
+To use BROADCAST, the following Python packages are required:
 
 * numpy
 * scipy
@@ -39,31 +39,26 @@ An example of installation of the required packages is shown below:
    $ source activate ENV_NAME
    (ENV_NAME) $ conda install numpy scipy matplotlib psutil mpi4py petsc=*=*complex* petsc4py slepc=*=*complex* slepc4py
 
-To install BROADCAST, run the following compile command in the three folders **./**, **./misc/** and **./srcfv/**:
+Once the packages installed, to install BROADCAST, run the following compile command in the **three** folders **./**, **./misc/** and **./srcfv/**:
 
 .. code-block:: console
 
    (ENV_NAME) $ python compile*.py
 
+Implementation
+--------------
+
+.. figure:: org1.png
+   :scale: 20%
+   :align: center
+   :alt: organisation of the code
+
+List of the programs: :ref:`listprogra`.
 
 
 Creating recipes
 ----------------
 
-To retrieve a list of random ingredients,
-you can use the ``lumache.get_random_ingredients()`` function:
+:py:func:`lumache.get_random_ingredients`
 
-.. autofunction:: lumache.get_random_ingredients
-
-The ``kind`` parameter should be either ``"meat"``, ``"fish"``,
-or ``"veggies"``. Otherwise, :py:func:`lumache.get_random_ingredients`
-will raise an exception.
-
-.. autoexception:: lumache.InvalidKindError
-
-For example:
-
->>> import lumache
->>> lumache.get_random_ingredients()
-['shells', 'gorgonzola', 'parsley']
 
