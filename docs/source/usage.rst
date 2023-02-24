@@ -62,14 +62,47 @@ Implementation
 Program files
 --------------
 
-List of the programs available: :ref:`listprogram`.
+List of the programs and their description available: :ref:`listprogram`.
+
+
+Update and linearisation of FORTRAN source routines
+----------
+
+Routines stored in *tangent* are linearised from the folder *prepro*. Routines in *prepro* are generated from sub-routines in *phys*, *borders*, *lhs* and *rhs*.
+
+.. note::
+   
+   Never update a routine inside *prepro* or *tangent*. Always modify the sub-routines in the associated folders.
+
+
+Any modification of a numerical scheme or a boundary condition (anything inside *phys*, *borders*, *lhs* and *rhs*) must be propagated to the preprocessed file *prepro* and the linearised files (at least *tangent* for the Jacobian and optionnaly *adjoint*, *tangenttangentHess*,... if you also use adjoint, Hessian...). 
+
+For example, if the function :py:func:`bc_no_reflexion_2d` inside *borders* has been updated. Run *compile_borders.py* to update the function in *prepro* and compile it.
+
+.. code-block:: console
+
+   (ENV_NAME) $ python compile_borders.py
+
+Then, to linearise a routine, run the associated program *tap_tangent.py* and compile again the associated source.
+
+.. code-block:: console
+
+   (ENV_NAME) $ python tap_tangent.py
+   (ENV_NAME) $ python compile_tangent.py
+
+
+Input/Output
+--------------
 
 
 
 
-Creating recipes
-----------------
+List of required variables
+--------------
 
-:py:func:`lumache.get_random_ingredients`
+List of the common variables and their meaning: :ref:`listvar`
+
+
+
 
 
