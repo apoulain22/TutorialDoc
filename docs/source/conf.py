@@ -3,8 +3,8 @@
 # -- Project information
 
 project = 'BROADCAST'
-copyright = '2020, Cedric Content'
-author = 'Cedric Content and Arthur Poulain'
+copyright = '2020, Cédric Content'
+author = 'Cédric Content and Arthur Poulain'
 
 release = '1.0'
 #version = '0.1.0'
