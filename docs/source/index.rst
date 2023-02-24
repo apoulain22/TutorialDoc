@@ -5,13 +5,11 @@ Welcome to BROADCAST documentation!
 
 Developer’s repository link is on `github <https://github.com/OneraHub/Broadcast>`_.
 
-
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+Check out the :doc:`usage` section for further information, including the :ref:`installation` process.
 
 .. note::
 
-   More resources on BROADCAST in `Poulain et al. CPC (2023) <http://denissipp.free.fr/pdf/2022-CPC-PoulainContentSippRigasGarnier.pdf>`_.
+   More information about BROADCAST in `Poulain et al. CPC (2023) <http://denissipp.free.fr/pdf/2022-CPC-PoulainContentSippRigasGarnier.pdf>`_.
 
 Contents
 --------
@@ -19,4 +17,3 @@ Contents
 .. toctree::
 
    usage
-   api
