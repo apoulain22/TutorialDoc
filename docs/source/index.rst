@@ -1,23 +1,17 @@
-Welcome to Lumache's documentation!
+Welcome to BROADCAST documentation!
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**BROADCAST** (*multi-Blocks stRuctured high-Order Algorithmically Differentiated Compressible nAvier-stokes Stability Tools*) is a software which discretises the compressible Navier-Stokes equations and then extracts the linearised state derivative operators through Algorithmic Differentiation providing a toolbox for laminar flow dynamics.
 
-*blabla* test **KKKA**
+Developer’s repository link is on `github <https://github.com/OneraHub/Broadcast>`_.
 
-.. code-block::
-
-   a=b
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
 
 .. note::
 
-   This project is under active development.
+   More resources on BROADCAST in `Poulain et al. CPC (2023) <http://denissipp.free.fr/pdf/2022-CPC-PoulainContentSippRigasGarnier.pdf>`_.
 
 Contents
 --------
