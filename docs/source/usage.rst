@@ -49,11 +49,16 @@ Implementation
 --------------
 
 .. figure:: org1.png
-   :scale: 20%
-   :align: center
+   :scale: 49%
+   :align: left
    :alt: organisation of the code
 
-List of the programs: :ref:`listprogram`.
+.. figure:: org2.png
+   :scale: 49%
+   :align: right
+   :alt: organisation of the code
+
+List of the programs available: :ref:`listprogram`.
 
 
 Creating recipes
