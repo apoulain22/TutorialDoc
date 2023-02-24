@@ -53,7 +53,7 @@ Implementation
    :align: center
    :alt: organisation of the code
 
-List of the programs: :ref:`listprogra`.
+List of the programs: :ref:`listprogram`.
 
 
 Creating recipes
