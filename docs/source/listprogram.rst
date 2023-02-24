@@ -4,7 +4,7 @@ Program files
 ==========================
 
 #. 'srcfv' folder includes BROADCAST source: details of FORTRAN files in :ref:`srcfvfiles`.
-#. 'misc' folder includes Jacobian construction and all PETSc functions
+#. 'misc' folder includes Jacobian construction and all PETSc functions.
 #. 'ADFirstAidKit' folder to compute the adjoint through TAPENADE software -> unnecessary for BROADCAST.
 #. 'SIM' folder includes the self-similar profile generator program -> useful to initialise boundary layer simulations.
 
