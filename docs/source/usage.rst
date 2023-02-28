@@ -33,7 +33,7 @@ To use BROADCAST, the following Python packages are required:
 
    Developers which update the FORTRAN sources of BROADCAST need the Algorithmic Differentation tool **TAPENADE**. The `tapenade <http://www-tapenade.inria.fr:8080/tapenade/index.jsp>`_ web server can be used to linearise FORTRAN routines without requiring to install TAPENADE.
 
-An example of installation of the required packages is shown below:
+An example of installation of the required packages is shown below through *anaconda*:
 
 .. code-block:: console
 
@@ -47,7 +47,9 @@ Once the packages installed, to install BROADCAST, run the following compile com
 
 .. code-block:: console
 
-   (ENV_NAME) $ python compile*.py
+   (ENV_NAME) [.]$ python compilef90.py
+   (ENV_NAME) [./misc]$ python compile_misc.py
+   (ENV_NAME) [./srcfv]$ ./compile_all.sh
 
 Implementation
 --------------
@@ -85,20 +87,20 @@ For example, if the function :py:func:`bc_no_reflexion_2d` inside *borders* has 
 
 .. code-block:: console
 
-   (ENV_NAME) $ python compile_borders.py
+   $ python compile_borders.py
 
 Then, to linearise a routine, run the associated program *tap_tangent.py* (tap* files linearise through TAPENADE software the associated routines) and compile again the associated source.
 
 .. code-block:: console
 
-   (ENV_NAME) $ python tap_tangent.py
-   (ENV_NAME) $ python compile_tangent.py
+   $ python tap_tangent.py
+   $ python compile_tangent.py
 
 
 Input/Output
 --------------
 
-
+Required input are numpy arrays and scalars given in :ref:`listvar`. Output of BROADCAST main code is a .*npz* file where all required variables are stored as numpy arrays inside a dictionnary. Other output format (CGNS for instance) must be implemented by the user.
 
 
 List of required variables

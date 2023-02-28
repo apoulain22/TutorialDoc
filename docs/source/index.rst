@@ -1,7 +1,7 @@
 Welcome to BROADCAST documentation!
 ===================================
 
-**BROADCAST** (*multi-Blocks stRuctured high-Order Algorithmically Differentiated Compressible nAvier-stokes Stability Tools*) is a software which discretises the compressible Navier-Stokes equations and then extracts the linearised state derivative operators through Algorithmic Differentiation providing a toolbox for laminar flow dynamics.
+**BROADCAST** (*multi-Blocks stRuctured high-Order Algorithmically Differentiated Compressible nAvier-stokes Stability Tools*) is a software which discretises the compressible Navier-Stokes equations and extracts the linearised state derivative operators through Algorithmic Differentiation providing a toolbox for laminar flow dynamics.
 
 Developer’s repository link is on `github <https://github.com/OneraHub/Broadcast>`_.
 
