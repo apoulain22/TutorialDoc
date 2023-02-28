@@ -89,7 +89,7 @@ For example, if the function :func:`bc_no_reflexion_2d` inside *borders* has bee
 
    $ python compile_borders.py
 
-Then, to linearise a routine, run the associated program *tap_tangent.py* (tap* files linearise through TAPENADE software the associated routines) and compile again the associated source.
+Then, to linearise a routine, run the associated program *tap_tangent_bc.py* (tap* files linearise through TAPENADE software the associated routines), the linearised function :func:`bc_no_reflexion_2d_d` is then produced from the function :func:`bc_no_reflexion_2d` inside *prepro* and stored in *tangent*. Finally, compile again the associated source.
 
 .. code-block:: console
 

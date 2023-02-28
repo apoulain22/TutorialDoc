@@ -31,7 +31,6 @@ Physics:
 * **cs** (*real*): Sutherland tempearture.
 * **prandtl** (*real*): Prandtl number.
 * **mach** (*real*): Mach number.
-..* **tinf** (*real*): Free-stream static temperature.
 
 Solution:
 
@@ -40,14 +39,14 @@ Solution:
 
 Numerics:
 
-* **k2** (*real*): Low-order dissipation coefficient for shock sensor in the FE-MUSCL numerical scheme. Default value to 1.01.
-* **k4** (*real*): High-order dissipation coefficient in the FE-MUSCL numerical scheme. Default value to 1.
-* **sch** (*string*): Numerical scheme to set. Only one implemented. **sch** = "dnc".
-* **order** (*integer*): Numerical scheme order. Availables options are 3, 5, 7 or 9.
+* **k2** (*real*): low-order dissipation coefficient for shock sensor in the FE-MUSCL numerical scheme. Default value to 1.01.
+* **k4** (*real*): high-order dissipation coefficient in the FE-MUSCL numerical scheme. Default value to 1.
+* **sch** (*string*): numerical scheme to set. Only one implemented. **sch** = "dnc".
+* **order** (*integer*): numerical scheme order. Availables options are 3, 5, 7 or 9.
 
 Boundary conditions:
 
-* **interf** (*numpy array of size (2, 2)*): range of the coordinates for BC location. **interf[0,0]** = imin, **interf[0,1]** = jmin, **interf[1,0]** = imax and **interf[1,1]** = jmax.
+* **interf** (*numpy array of size (2, 2)*): range of the coordinates for one BC location. **interf[0,0]** = imin, **interf[0,1]** = jmin, **interf[1,0]** = imax and **interf[1,1]** = jmax.
 * **lf** (*list of strings*): list of routines names for BC and numerical scheme.
 
 Linearised operators - Jacobian:
