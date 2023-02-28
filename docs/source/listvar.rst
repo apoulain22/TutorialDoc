@@ -16,6 +16,26 @@ Required input:
 * **yc** (*numpy array of size (im+2gh,jm+2gh)*): y coordinates of the cell centers.
 * **vol** (*numpy array of size (im+2gh,jm+2gh)*): volumes of the cells.
 * **volf** (*numpy array of size (im+2gh,jm+2gh,2)*): inverse of the volume computed at the cell faces. 
-* **w** (*numpy array of size (im+2gh,jm+2gh,5)*): state. **w[:,:,0]**:math:` = \rho` is the density, **w[:,:,1]**:math:` = \rho u` is the momentum in x-direction, **w[:,:,2]**:math:` = \rho v` is the momentum in y-direction, **w[:,:,3]**:math:` = \rho w` is the momentum in z-direction and **w[:,:,4]**:math:` = \rho E` is the total energy.
-* **res** (*numpy array of size (im+2gh,jm+2gh)*): residual of Navier-Stokes equations.
+* **nx** (*numpy array of size (im+1+2gh,jm+1+2gh,2)*): normal in x-direction computed at the cell faces.
+* **ny** (*numpy array of size (im+1+2gh,jm+1+2gh,2)*): normal in y-direction computed at the cell faces.
+
+* **w** (*numpy array of size (im+2gh,jm+2gh,5)*): state. **w[:,:,0]** :math:`= \rho` is the density, **w[:,:,1]** :math:`= \rho u` is the momentum in x-direction, **w[:,:,2]** :math:`= \rho v` is the momentum in y-direction, **w[:,:,3]** :math:`= \rho w` is the momentum in z-direction and **w[:,:,4]** :math:`= \rho E` is the total energy.
+* **res** (*numpy array of size (im+2gh,jm+2gh,5)*): residual of Navier-Stokes equations.
+
+* **gam** (*real*): :math:`= \gamma` constant.
+* **cp** (*real*): specific heat at constant pressure.
+* **cv** (*real*): specific heat at constant volume.
+* **rgaz** (*real*): specific gas constant.
+* **muref** (*real*): Sutherland reference viscosity.
+* **tref** (*real*): Sutherland reference tempearture.
+* **cs** (*real*): Sutherland tempearture.
+* **prandtl** (*real*): Prandtl number.
+
+* **mach** (*real*): Mach number.
+* **tinf** (*real*): Free-stream static temperature.
+
+* **k2** (*real*): Low-order dissipation coefficient for shock sensor in the FE-MUSCL numerical scheme. Default value to 1.01.
+* **k4** (*real*): High-order dissipation coefficient in the FE-MUSCL numerical scheme. Default value to 1.
+* **sch** (*string*): Numerical scheme to set. Only one implemented. **sch**="dnc".
+* **order** (*integer*): Numerical scheme order. Availables options are 3, 5, 7 or 9.
 
