@@ -54,12 +54,12 @@ Once the packages installed, to install BROADCAST, run the following compile com
 Implementation
 --------------
 
-.. figure:: org1.png
+.. figure:: org2.png
    :scale: 90%
    :align: center
    :alt: organisation of the code
 
-.. figure:: org2.png
+.. figure:: org1.png
    :scale: 90%
    :align: center
    :alt: organisation of the code
@@ -103,7 +103,7 @@ Input/Output
 Required input are numpy arrays and scalars given in :ref:`listvar`. Output of BROADCAST main code is a .*npz* file where all required variables are stored as numpy arrays inside a dictionnary. Other output format (CGNS for instance) must be implemented by the user.
 
 
-List of required variables
+List of variables
 --------------
 
 List of the common variables and their meaning: :ref:`listvar`
