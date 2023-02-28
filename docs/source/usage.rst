@@ -83,7 +83,7 @@ Routines stored in *tangent* are linearised from the folder *prepro*. Routines i
 
 Any modification of a numerical scheme or a boundary condition (anything inside *phys*, *borders*, *lhs* and *rhs*) must be propagated to the preprocessed file *prepro* and the linearised files (at least *tangent* for the Jacobian and optionnaly *adjoint*, *tangenttangentHess*,... if you also use adjoint, Hessian...). 
 
-For example, if the function :py:func:`bc_no_reflexion_2d` inside *borders* has been updated. Run *compile_borders.py* to update the function in *prepro* and compile it.
+For example, if the function :func:`bc_no_reflexion_2d` inside *borders* has been updated. Run *compile_borders.py* to update the function in *prepro* and compile it.
 
 .. code-block:: console
 
@@ -100,7 +100,7 @@ Then, to linearise a routine, run the associated program *tap_tangent.py* (tap* 
 Input/Output
 --------------
 
-Required input are numpy arrays and scalars given in :ref:`listvar`. Output of BROADCAST main code is a .*npz* file where all required variables are stored as numpy arrays inside a dictionnary. Other output format (CGNS for instance) must be implemented by the user.
+Input are numpy arrays and scalars. Output of BROADCAST main code is a .*npz* file where all required variables are stored as numpy arrays inside a dictionnary. Other output format (CGNS for instance) must be implemented by the user.
 
 
 List of variables
