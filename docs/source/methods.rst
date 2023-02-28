@@ -4,7 +4,7 @@ Methods
 Equations
 ------
 
-:math:`= \frac{dq}{dt} = R(q)`
+:math:`\frac{dq}{dt} = R(q)`
 
 with q the conservative state and R the residual of Navier-Stokes equations.
 
@@ -18,7 +18,7 @@ The convective scheme implemented is the FE-MUSCL scheme, called DNC in the prog
 
 * :func:`flux_num_dnc3_nowall_2d` calls FE-MUSCL at order 3. It is the baseline scheme for cartesian equations.
 * :func:`flux_num_dnc3_nowall_polar_2d` is the baseline scheme for axisymmetric equations.
-* :func:`flux_num_dnc3_2d` is the scheme for cartesian equations with a wall boundary at j=0 along all i-direction (flat plate case for instance). This scheme includes off-centered computation of gradient in order not to pick values far inside the wall. Results are very similar to those obtained with :func:`flux_num_dnc3_nowall_2d`.
+* :func:`flux_num_dnc3_2d` is the scheme for cartesian equations with a wall boundary at j=0 along all i-direction (flat plate case for instance). This scheme includes off-centered computation of gradients in order not to pick values far inside the wall. Results are very similar to those obtained with :func:`flux_num_dnc3_nowall_2d`.
 * :func:`flux_num_dnc3_polar_2d` is the same as above for axisymmetric equations.
 
 
@@ -36,12 +36,11 @@ Boundary conditions
 Linearised operators - Jacobian
 -----
 
-Exact linearisation of the residual is computed by the Algorithmic Differentiation tool. Then, iteratively, the Jacobian is computed by series of test-vectors to fill in the different entries of the Jacobian without overlapping cross contributions. Test-vectors and indexing of matrix-vector products functions are inside *ComputeJacobian.f90*.
+Exact linearisation of the residual is computed by the Algorithmic Differentiation tool. Then, the Jacobian is computed by series of test-vectors to fill in the different entries of the Jacobian without overlapping cross contributions. Test-vectors and indexing of matrix-vector products functions are inside *ComputeJacobian.f90*.
 
 .. note::
    
-   Opposite of the Jacobian is computed from the residual.
-   :math:`A = - \frac{dR}{dq} \Rightarrow \frac{dq'}{dt} + Aq' = 0`
+   Opposite of the Jacobian is computed from the residual: :math:`A = - \frac{dR}{dq} \Rightarrow \frac{dq'}{dt} + Aq' = 0`
 
 Time solvers
 -----
