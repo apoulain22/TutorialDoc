@@ -31,7 +31,7 @@ The viscous scheme is a compact scheme at order 4 (5 point stencil) inside the d
 Boundary conditions
 -----
 
-
+* :func:`flux_num_dnc3_nowall_2d` calls FE-MUSCL at order 3. It is the baseline scheme for cartesian equations.
 
 Linearised operators - Jacobian
 -----

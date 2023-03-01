@@ -55,12 +55,12 @@ Implementation
 --------------
 
 .. figure:: org2.png
-   :scale: 90%
+   :scale: 49%
    :align: center
    :alt: organisation of the code
 
 .. figure:: org1.png
-   :scale: 90%
+   :scale: 49%
    :align: center
    :alt: organisation of the code
 
@@ -93,7 +93,7 @@ Then, to linearise a routine, run the associated program *tap_tangent_bc.py* (ta
 
 .. code-block:: console
 
-   $ python tap_tangent.py
+   $ python tap_tangent_bc.py
    $ python compile_tangent.py
 
 
