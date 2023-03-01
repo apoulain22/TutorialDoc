@@ -54,7 +54,7 @@ Boundary conditions
 * :func:`bc_wall_blow_profile_2d`: Adiabatic viscous wall BC with non-zero velocity in y-direction (equal to the wall-normal direction only if the wall is horizontal). Dirichlet BC for velocities :math:`u = 0`, :math:`v = velprof`, Neumann BC for pressure with the assumption :math:`\frac{dp}{dn} = 0`. Prescribed wall velocity profile in y-direction with variable *velprof*. Input variables are (*w, velprof, loc, gam, rgaz, interf, gh, im, jm*).
 
 
-Inputs for the linearised boundary conditions are different: :ref:`linearisedbcinput`
+Inputs for the linearised boundary conditions are different: :ref:`linearisedbcinput`.
 
 
 Linearised operators - Jacobian
