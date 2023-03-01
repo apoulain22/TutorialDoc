@@ -28,13 +28,33 @@ Viscous scheme
 The viscous scheme is a compact scheme at order 4 (5 point stencil) inside the domain and at order 2 (3 point stencil) near the wall boundary at j=0 if there is one.
 
 
-Boundary conditions
+Boundary conditions 
 -----
 
-* :func:`bc_general_2d`: Dirichlet boundary condition (supersonic inflow BC). Possibility to prescribe different values towards the depth of the ghost cells (varying profile in the BC). Prescribed profile given with variable *field*. Input variables are (*w, loc, interf, field, im, jm*).
+* :func:`bc_general_2d`: Dirichlet BC (supersonic inflow BC). Possibility to prescribe different values towards the depth of the ghost cells (varying profile in the BC). Prescribed profile given with variable *field*. Input variables are (*w, loc, interf, field, im, jm*).
 
 * :func:`bc_no_reflexion_2d`: Non-reflective BC. It prescribes a target value at the face center (same value within the depth of the ghost cells) computed from the characteristics through the state inside the domain and a prescribed state given with variable *wbd*. Input variables are (*w, wbd, loc, interf, nx, ny, gam, gh, im, jm*).
 
+* :func:`bc_supandsubinlet_2d`: Mix of subsonic and supersonic inflow. If M<1, use a non-reflective BC (:func:`bc_no_reflexion_2d`) otherwise Dirichlet BC (:func:`bc_general_2d`). Input variables are (*w, loc, interf, field, nx, ny, gam, gh, im, jm*).
+
+* :func:`bc_extrapolate_o2_2d`: Extrapolation BC at order 2 (supersonic outflow BC). Available at order 2, 3, 4, 5, 7 and 9. Input variables are (*w, loc, interf, im, jm, gh*).
+
+* :func:`bc_symmetry_2d`: Symmetry BC. Input variables are (*w, loc, interf, nx, ny, gh, im, jm*).
+
+* :func:`bc_antisymmetry_2d`: Anti-symmetry BC. Input variables are (*w, loc, interf, nx, ny, gh, im, jm*).
+
+* :func:`jn_match_2d`: Join BC for periodic mesh (as the O-mesh of a cylinder for instance) or multi-block management. Copy the values given by the input *wd* into *wr*. Input variables are (*wr, prr, gh1r, gh2r, gh3r, gh4r, imr, jmr, wd, prd, gh1d, gh2d, gh3d, gh4d, imd, jmd, tr*).
+
+* :func:`bc_wall_viscous_adia_2d`: Adiabatic viscous wall BC. Dirichlet BC for velocities :math:`u = v = 0`, Neumann BC for pressure with the assumption :math:`\frac{dp}{dn} = 0`. Input variables are (*w, loc, gam, interf, gh, im, jm*).
+
+* :func:`bc_wall_viscous_iso_2d`: Constant isotherm viscous wall BC. Dirichlet BC for velocities :math:`u = v = 0`, Neumann BC for pressure with the assumption :math:`\frac{dp}{dn} = 0`. Prescribed constant wall temperature with variable *twall*. Input variables are (*w, twall, loc, gam, rgaz, interf, gh, im, jm*).
+
+* :func:`bc_wall_viscous_iso_profile_2d`: Variable isotherm viscous wall BC. Dirichlet BC for velocities :math:`u = v = 0`, Neumann BC for pressure with the assumption :math:`\frac{dp}{dn} = 0`. Prescribed wall temperature profile with variable *twallprof*. Input variables are (*w, twallprof, loc, gam, rgaz, interf, gh, im, jm*).
+
+* :func:`bc_wall_blow_profile_2d`: Adiabatic viscous wall BC with non-zero velocity in y-direction (equal to the wall-normal direction only if the wall is horizontal). Dirichlet BC for velocities :math:`u = 0`, :math:`v = velprof`, Neumann BC for pressure with the assumption :math:`\frac{dp}{dn} = 0`. Prescribed wall velocity profile in y-direction with variable *velprof*. Input variables are (*w, velprof, loc, gam, rgaz, interf, gh, im, jm*).
+
+
+Inputs for the linearised boundary conditions are different: :ref:`linearisedbcinput`
 
 
 Linearised operators - Jacobian

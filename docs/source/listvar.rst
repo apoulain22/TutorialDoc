@@ -47,7 +47,7 @@ Numerics:
 Boundary conditions:
 
 * **interf** (*numpy array of size (2, 2)*): range of the coordinates for one BC location. **interf[0,0]** = imin, **interf[0,1]** = jmin, **interf[1,0]** = imax and **interf[1,1]** = jmax.
-* **loc** (*numpy array of size (2, 2)*): range of the coordinates for one BC location. **interf[0,0]** = imin, **interf[0,1]** = jmin, **interf[1,0]** = imax and **interf[1,1]** = jmax.
+* **loc** (*string*): location of the BC. Available values are "Ilo" (i=imin), "Ihi" (i=imax), "Jlo" (j=jmin) and "Jhi" (j=jmax).
 * **lf** (*list of strings*): list of routines names for BC and numerical scheme.
 
 Linearised operators - Jacobian:
