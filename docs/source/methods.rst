@@ -31,7 +31,11 @@ The viscous scheme is a compact scheme at order 4 (5 point stencil) inside the d
 Boundary conditions
 -----
 
-* :func:`flux_num_dnc3_nowall_2d` calls FE-MUSCL at order 3. It is the baseline scheme for cartesian equations.
+* :func:`bc_general_2d`: Dirichlet boundary condition (supersonic inflow BC). Possibility to prescribe different values towards the depth of the ghost cells (varying profile in the BC). Prescribed profile given with variable *field*. Input variables are (*w, loc, interf, field, im, jm*).
+
+* :func:`bc_no_reflexion_2d`: Non-reflective BC. It prescribes a target value at the face center (same value within the depth of the ghost cells) computed from the characteristics through the state inside the domain and a prescribed state given with variable *wbd*. Input variables are (*w, wbd, loc, interf, nx, ny, gam, gh, im, jm*).
+
+
 
 Linearised operators - Jacobian
 -----
