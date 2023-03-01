@@ -14,7 +14,7 @@ Boundary Layer case files:
 To compute the baseflow of a boundary layer
 ^^^^
 
-* card_bl2d_fv_npz.py -> Python card to run BROADCAST code, call BROADCAST.py
+* card_bl2d_fv_npz.py -> Python card to run BROADCAST code, call BROADCAST_npz.py
 -> Must be fill in by the user (Numerical param., BROADCAST options...).
 
 * BROADCAST_npz.py -> main program, call the functions compiled in 'srcfv' and 'misc' folders

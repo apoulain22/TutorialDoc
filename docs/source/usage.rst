@@ -100,7 +100,7 @@ Then, to linearise a routine, run the associated program *tap_tangent_bc.py* (ta
 Input/Output
 --------------
 
-Input are numpy arrays and scalars. Output of BROADCAST main code is a .*npz* file where all required variables are stored as numpy arrays inside a dictionnary. Other output format (CGNS for instance) must be implemented by the user.
+Input are numpy arrays and scalars. Output of BROADCAST main code is .npz file where all required variables are stored as numpy arrays inside a dictionnary. Other output format (CGNS for instance) must be implemented by the user.
 
 
 List of variables
