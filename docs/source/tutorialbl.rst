@@ -105,7 +105,7 @@ Then, the function :func:`bl2d_fromNPZtree` from **BROADCAST_npz.py** solves the
 BROADCAST_npz.py
 ^^^^^
 
-Secondly, go inside the function :func:`bl2d_fromNPZtree` in **BROADCAST_npz.py**.
+Secondly, go inside the function :func:`bl2d_prepro` in **BROADCAST_npz.py**.
 
 Specify the mesh in x-direction, the mesh is here uniform:
 
@@ -155,6 +155,60 @@ Normalisation is performed with :math:`\rho_\infty`, :math:`U_\infty` and :math:
 
    Dimensionalised data were provided inside **card_bl2d_fv_npz.py** because the normalisation is performed here. It is recommended to run the solver with normalisation as the operators are better conditionned for linear solvers. Resolvent and global stability analysis assumes normalised operators so normalisation is strongly recommended.
 
+Specify the interfaces of the domain i.e. the location of the boundary conditions. Be careful, indexing is in FORTRAN (start at 1 for the first cell). Example for the inlet BC, it is along i=1, starts at the first bottom cell j=1 until the last top cell j=jm. 
+
+.. code-block:: python
+
+   # Ilo
+   interf1      = _np.zeros((2,2), order='F')
+   interf1[0,0] = 1  # imin
+   interf1[0,1] = 1  # jmin
+   interf1[1,0] = 1  # imax
+   interf1[1,1] = jm # jmax 
+
+A second example for bottom BC, it is along j=1, starts before the first left cell (located at i=1) inside the left ghost cells i=1-gh until the very last right ghost cells i=im+gh. 
+
+.. code-block:: python
+
+   # Jlo
+   interf3      = _np.zeros((2,2), order='F')
+   interf3[0,0] = 1-gh # imin 
+   interf3[0,1] = 1  # jmin
+   interf3[1,0] = im+gh # imax
+   interf3[1,1] = 1  # jmax
+
+.. note::
+
+   Because the viscous fluxes are based on a compact stencil, boundary conditions should also be specified inside the ghost cells at the four corners of the domain. Notice the example of interf3 where the bottom boundary condition is applied from i=1-gh until i=im+gh. It results that boundary conditions should be applied in a right order. In this example, the inlet boundary condition should be applied before the bottom boundary condition.
+
+Initialise the profiles for Dirichlet and non-reflection BC with the variables *field* and *wbd*. Be careful that they should be the same length as the corresponding interface. For instance, if *interf1* is the inlet BC where a Dirichlet is applied therefore the corresponding *field* has the length *jm* to match *interf1* range.
+
+.. code-block:: python
+
+   field = _np.zeros((jm, gh, 5), order = 'F') # profile for inlet; different values inside the ghost cells
+   wbd   = _np.zeros((im+gh , 5), order = 'F') # profile for non-reflection top BC, value at the first ghost cell only
+
+Compute and initialise all the state with a compressible self-similar solution:
+
+.. code-block:: python
+
+   road,uad,vad,Ead = blsim.BLprofile(x0[:,:]*Lref, y0[:,gh:]*Lref,mach, dphys, isplot=False, damped=False)
+
+Fill in the variables *field* and *wbd* for a boundary layer case. Otherwise, these variables can be filled by the user with imported numpy arrays.
+
+.. code-block:: python
+
+   f_init.set_bndbl_2d(w, field, wbd, im)
+
+Eventually, write all the configurate setup inside a .npz file:
+
+.. code-block:: python
+
+   writeNPZ(filename, im, jm, gh, w, x0, y0, vol, volf, nx, ny, xc, yc, field, wbd, res, sch, k2, k4, interf1, interf2, interf3, interf4, lf, cp, cv, gam, cs, tref, muref, rgaz, mach, prandtl, pinf=pinf)
+
+
+Now, go inside the function :func:`bl2d_fromNPZtree` in **BROADCAST_npz.py**.
+
 
 
 
@@ -165,5 +219,6 @@ Resolvent
 
 Global stability analysis
 --------
+
 
 
