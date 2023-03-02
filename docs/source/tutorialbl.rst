@@ -17,11 +17,11 @@ Inside **card_bl2d_fv_npz.py**, specify first the geometry of your domain: discr
 .. code-block:: python
 
    #GEOMETRY
-im    = 300   # X discretization
-jm    = 150  # Y discretization 
-L     = 0.59  # FP length
-high  = 0.035   # FP high
-xini  = 0.0060  # beginning 
+   im    = 300   # X discretization
+   jm    = 150  # Y discretization 
+   L     = 0.59  # FP length
+   high  = 0.035   # FP high
+   xini  = 0.0060  # beginning 
 
 Choose to write the 
 
