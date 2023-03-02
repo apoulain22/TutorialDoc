@@ -93,7 +93,7 @@ Select your physical setup parameters with:
    # dphys['P0']       = 728.312  
    dphys['Runit']    = 3.4e6
 
-At the end of the file **card_bl2d_fv_npz.py**, the function :func:`bl2d_prepro` from **BROADCAST_npz.py** file initialises the geometry, the BC location and the normalisation. This function should be modified by the user.
+At the end of the file **card_bl2d_fv_npz.py**, the function :func:`bl2d_prepro` from **BROADCAST_npz.py** file initialises the geometry, the BC location and the normalisation. This function should also be modified by the user.
 
 Then, the function :func:`bl2d_fromNPZtree` from **BROADCAST_npz.py** solves the configuration previously setup by :func:`bl2d_prepro`.
 
@@ -105,8 +105,55 @@ Then, the function :func:`bl2d_fromNPZtree` from **BROADCAST_npz.py** solves the
 BROADCAST_npz.py
 ^^^^^
 
-Secondly, inside the function :func:`bl2d_fromNPZtree` in **BROADCAST_npz.py**, 
+Secondly, go inside the function :func:`bl2d_fromNPZtree` in **BROADCAST_npz.py**.
 
+Specify the mesh in x-direction, the mesh is here uniform:
+
+.. code-block:: python
+
+   ## MESH in x-direction
+   x  = _np.linspace(xini, xini+L , im+1)
+
+
+Specify the mesh in y-direction, the mesh is splitted into two parts with different stretching if y<*deltaBL* or y>*deltaBL*:
+
+.. code-block:: python
+
+   ## MESH in y-direction
+   Ny_in   = 80*jm//100 #number of points inside the BL    
+   deltaBL = high/4     #height of the BL
+   percent = 0.02       #growth factor increase inside the BL
+
+   Ny_out  = jm - Ny_in 
+   Nend    = high/deltaBL
+   y_int   = mesh.bigeom_stretch_in(Ny_in, deltaBL, percent)
+   y_out   = mesh.exp_stretch_out(Ny_out, deltaBL, percent, Nend)
+   y       = _np.concatenate((y_int, y_out)) 
+
+.. note::
+
+   You can create your own mesh with an external meshing tool. For a cartesian rectangular mesh, import *x* and *y* grid point profiles as numpy arrays. Otherwise, import the full range of grid points as numpy arrays and store it inside the variables *x0* and *y0*.
+
+Normalisation is performed with :math:`\rho_\infty`, :math:`U_\infty` and :math:`T_\infty`. In this example, normalisation of the length is performed with the unit Reynolds number.
+
+.. code-block:: python
+
+   ## Adim with ref length
+   # Lref   = 8.e-2  
+   # Muref  = Roref*Vref*Lref
+   ## OR Adim with unit Reynolds
+   Muref  = muinf
+   Lref   = Muref/(Roref*Vref)
+   ## OR no normalisation
+   # Roref = 1.
+   # Vref  = 1.
+   # Tref  = 1.
+   # Lref  = 1.
+   # Muref = 1.
+
+.. note::
+
+   Dimensionalised data were provided inside **card_bl2d_fv_npz.py** because the normalisation is performed here. It is recommended to run the solver with normalisation as the operators are better conditionned for linear solvers. Resolvent and global stability analysis assumes normalised operators so normalisation is strongly recommended.
 
 
 
