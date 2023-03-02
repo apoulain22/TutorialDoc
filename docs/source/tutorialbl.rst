@@ -227,7 +227,7 @@ Apply the Boundary conditions before the computation of the residual (they shoul
 .. note::
 
    Be careful that the same boundary conditions should be applied three times in the code:
-   
+
    #. BC on the state.
    #. Linearised BC to construct the Jacobian.
    #. Linearised BC to construct the 3D contributions of the Jacobian.
@@ -238,12 +238,12 @@ Compute the residual:
 
    fsch(res, w, x0, y0, nx, ny, xc, yc, vol, volf, gh, cp, cv, prandtl, gam, rgaz, cs, muref, tref, cs, k2, k4, im, jm)
 
-Then, the construction of the Jacobian follows a similar procedure:
+Then, the construction of the Jacobian follows an iterative procedure:
 
-#. Definition of a test-vector with :func:`testvector`
-#. Apply the linearised BC
-#. Apply the linearised residual
-#. Indexing of the matrix-vector product to construc the Jacobian with :func:`computejacobianfromjv_relaxed`
+#. Definition of a test-vector with :func:`testvector`.
+#. Apply the linearised BC.
+#. Apply the linearised residual.
+#. Indexing of the matrix-vector product to construc the Jacobian with :func:`computejacobianfromjv_relaxed`.
 
 The Jacobian is constructed in a CSR PETSc format:
 
@@ -251,32 +251,32 @@ The Jacobian is constructed in a CSR PETSc format:
 
    Jacs = pet.createMatPetscCSR(IA, JA, Jac, im*jm*5, im*jm*5, 5*(2*gh+1)**2)
 
-Linear solver (LU-factorisation here) to invert the Jacobian is defined:
+Linear solver (LU-factorisation here) to invert the Jacobian :math:`A` is defined:
 
 .. code-block:: python
 
    ksp  = pet.kspLUPetsc(Jacs)
 
-Newton iteration is performed by solving :math:`\delta q = A^{-1} R(q)' = 0`.
+Newton iteration is performed by solving :math:`\delta q = A^{-1} R(q)`.
 
 .. code-block:: python
 
    ksp, dwtmp = pet.iterNewton(_np.ravel(res[gh:-gh,gh:-gh,:]), Jacs, ksp)
 
-After convergence, the solution state is written at the cell center in .dat file:
+After convergence, the solution state is written at the cell center in a .dat file:
 
 .. code-block:: python
 
    filename = out_dir + '/state_atcenter_ite%i.dat' % it
    __writestate_center(filename, im, jm, w, xc, yc, gh)
 
-The Jacobian under the form of list of indices and values (and the solution state including the ghost cells) are written added to the setup .npz file:
+The Jacobian under the form of list of indices and values (and the solution state including the ghost cells) are written inside the setup .npz file:
 
 .. code-block:: python
 
    fillNPZ(filename, w, res, IA, JA, Jacvol, gh)
 
-In order to study three-dimensional eigenmodes in resolvent or global stability analyses, the 3D contributions are also computed and stored in the same .npz file:
+In order to study three-dimensional eigenmodes in resolvent or global stability analyses, the 3D contributions are also computed by the iterative procedure and stored in the same .npz file:
 
 .. code-block:: python
 
