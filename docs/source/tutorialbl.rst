@@ -1,4 +1,4 @@
-Tutorial: Boundary layer
+Tutorial: Boundary Layer
 =====================
 
 
@@ -32,7 +32,7 @@ Select the folder *out_dir* to save your state solution and the *npz* file *tree
    out_dir = 'Wksp/'
    treename = 'tree300x150'
 
-Select the number of iterations of your method (for any method). Select the CFL number, the frequency of printing/writing (for explicit/implicit methods only). For Newton method, CFL number is specified inside **BROADCAST_npz.py**, it prints residual every iterations and writes at the last iteration. 
+Select the number of iterations of your method and the CFL number (for any method). Select the frequency of printing/writing (for explicit/implicit methods only). For Newton method, by default it prints residual every iterations and writes the state at the last iteration. 
 
 .. code-block:: python
 
@@ -179,13 +179,13 @@ A second example for bottom BC, it is along j=1, starts before the first left ce
 
 .. note::
 
-   Because the viscous fluxes are based on a compact stencil, boundary conditions should also be specified inside the ghost cells at the four corners of the domain. Notice the example of interf3 where the bottom boundary condition is applied from i=1-gh until i=im+gh. It results that boundary conditions should be applied in a right order. In this example, the inlet boundary condition should be applied before the bottom boundary condition.
+   Because the viscous fluxes are based on a compact stencil, boundary conditions should also be specified inside the ghost cells at the four corners of the domain. Notice the example of interf3 where the bottom boundary condition is applied from i=1-gh until i=im+gh. It results that boundary conditions should be applied in a good order. In this example, the inlet boundary condition should be applied before the bottom boundary condition.
 
 Initialise the profiles for Dirichlet and non-reflection BC with the variables *field* and *wbd*. Be careful that they should be the same length as the corresponding interface. For instance, if *interf1* is the inlet BC where a Dirichlet is applied therefore the corresponding *field* has the length *jm* to match *interf1* range.
 
 .. code-block:: python
 
-   field = _np.zeros((jm, gh, 5), order = 'F') # profile for inlet; different values inside the ghost cells
+   field = _np.zeros((jm, gh, 5), order = 'F') # profile for inlet, different values inside the ghost cells
    wbd   = _np.zeros((im+gh , 5), order = 'F') # profile for non-reflection top BC, value at the first ghost cell only
 
 Compute and initialise all the state with a compressible self-similar solution:
@@ -194,21 +194,92 @@ Compute and initialise all the state with a compressible self-similar solution:
 
    road,uad,vad,Ead = blsim.BLprofile(x0[:,:]*Lref, y0[:,gh:]*Lref,mach, dphys, isplot=False, damped=False)
 
-Fill in the variables *field* and *wbd* for a boundary layer case. Otherwise, these variables can be filled by the user with imported numpy arrays.
+Fill in the variables *field* and *wbd* for a boundary layer case with :func:`set_bndbl_2d`. Otherwise, these variables can be filled by the user with imported numpy arrays.
 
 .. code-block:: python
 
    f_init.set_bndbl_2d(w, field, wbd, im)
 
-Eventually, write all the configurate setup inside a .npz file:
+Eventually, write all the setup inside a .npz file:
 
 .. code-block:: python
 
    writeNPZ(filename, im, jm, gh, w, x0, y0, vol, volf, nx, ny, xc, yc, field, wbd, res, sch, k2, k4, interf1, interf2, interf3, interf4, lf, cp, cv, gam, cs, tref, muref, rgaz, mach, prandtl, pinf=pinf)
 
 
-Now, go inside the function :func:`bl2d_fromNPZtree` in **BROADCAST_npz.py**.
+Now, go inside the function :func:`bl2d_fromNPZtree` in **BROADCAST_npz.py**. Let's consider the Newton method solver:
 
+.. code-block:: python
+
+   elif compmode == 'fixed_point':
+
+Apply the Boundary conditions before the computation of the residual (they should be applied in the good order):
+
+.. code-block:: python
+
+   # Boundary on state vector
+   # finflow(w,'Ilo', interf1, field,im,jm)          
+   finflow(w,'Ilo',interf1,field,nx,ny,gam,im,jm)
+   fnoref(w,wbd,'Jhi',interf4,nx,ny,gam,gh,im,jm)
+   foutflow(w,'Ihi', interf2, im, jm, gh)
+   fwall(w,'Jlo', gam, interf3, gh, im, jm)
+
+.. note::
+
+   Be careful that the same boundary conditions should be applied three times in the code:
+   #. BC on the state.
+   #. Linearised BC to construct the Jacobian.
+   #. Linearised BC to construct the 3D contributions of the Jacobian.
+
+Compute the residual:
+
+.. code-block:: python
+
+   fsch(res, w, x0, y0, nx, ny, xc, yc, vol, volf, gh, cp, cv, prandtl, gam, rgaz, cs, muref, tref, cs, k2, k4, im, jm)
+
+Then, the construction of the Jacobian follows a similar procedure:
+
+#. Definition of a test-vector with :func:`testvector`
+#. Apply the linearised BC
+#. Apply the linearised residual
+#. Indexing of the matrix-vector product to construc the Jacobian with :func:`computejacobianfromjv_relaxed`
+
+The Jacobian is constructed in a CSR PETSc format:
+
+.. code-block:: python
+
+   Jacs = pet.createMatPetscCSR(IA, JA, Jac, im*jm*5, im*jm*5, 5*(2*gh+1)**2)
+
+Linear solver (LU-factorisation here) to invert the Jacobian is defined:
+
+.. code-block:: python
+
+   ksp  = pet.kspLUPetsc(Jacs)
+
+Newton iteration is performed by solving :math:`\delta q = A^{-1} R(q)' = 0`.
+
+.. code-block:: python
+
+   ksp, dwtmp = pet.iterNewton(_np.ravel(res[gh:-gh,gh:-gh,:]), Jacs, ksp)
+
+After convergence, the solution state is written at the cell center in .dat file:
+
+.. code-block:: python
+
+   filename = out_dir + '/state_atcenter_ite%i.dat' % it
+   __writestate_center(filename, im, jm, w, xc, yc, gh)
+
+The Jacobian under the form of list of indices and values (and the solution state including the ghost cells) are written added to the setup .npz file:
+
+.. code-block:: python
+
+   fillNPZ(filename, w, res, IA, JA, Jacvol, gh)
+
+In order to study three-dimensional eigenmodes in resolvent or global stability analyses, the 3D contributions are also computed and stored in the same .npz file:
+
+.. code-block:: python
+
+   fillNPZ_3D(filename, IAdz, JAdz, Jacdz, IAdz2, JAdz2, Jacdz2)
 
 
 
