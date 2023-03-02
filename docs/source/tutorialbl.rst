@@ -227,6 +227,7 @@ Apply the Boundary conditions before the computation of the residual (they shoul
 .. note::
 
    Be careful that the same boundary conditions should be applied three times in the code:
+   
    #. BC on the state.
    #. Linearised BC to construct the Jacobian.
    #. Linearised BC to construct the 3D contributions of the Jacobian.
@@ -282,9 +283,13 @@ In order to study three-dimensional eigenmodes in resolvent or global stability 
    fillNPZ_3D(filename, IAdz, JAdz, Jacdz, IAdz2, JAdz2, Jacdz2)
 
 
-
 Resolvent
 --------
+
+To compute the resolvent analysis of a boundary layer, go to the file **resolvent_all3D_1block.py**.
+
+
+
 
 
 
