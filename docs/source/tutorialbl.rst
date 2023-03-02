@@ -288,9 +288,72 @@ Resolvent
 
 To compute the resolvent analysis of a boundary layer, go to the file **resolvent_all3D_1block.py**.
 
+Specify the equations where to apply forcing:
 
+.. code-block:: python
 
+   equations = [1, 2, 3]  #momentum
+   # equations = [0, 1, 2, 3, 4]  #all equations
 
+Compute Chu energy norm *Qq* and L2 norm *Qvol2*:
+
+.. code-block:: python
+
+   Qq = computeQ_Echu(w[gh:-gh,gh:-gh,:], vol[gh:-gh,gh:-gh], gam, mach)
+   Qvol2, Qvol2inv = computeQ_L2(vol[gh:-gh,gh:-gh])
+
+Restrict both forcing and response inside a sub-domain defined by xmin, xmax, ymin, ymax. The restriction here excludes the outlet (:math:`Re_x < 1.75 \times 10^6`) and top (half of the initial domain size) parts of the domain:
+
+.. code-block:: python
+
+   xmin = x[0,0]
+   # xmin = 1.4e5
+
+   xmax = x[-1,0]
+   xmax = 1.75e6
+
+   ymin = y[0,0]
+
+   ymax = y[0,-1]
+   ymax = y[0,-1]/2
+
+Select the norm to apply for forcing and response and solve the eigenvalue problem. Be careful to be consistent with the choice of the equations where to apply forcing.
+
+.. code-block:: python
+
+   ##  Chu norm for response and L2 norm for forcing
+   eigenvalue, eigenvector_forcing, eigenvector_response = resolvent(frequency, wavenumber, Jacsurvol, Qq, Qvol2, Qvol2inv, P, Dz, Dzz)
+   ##  Chu norm for response and forcing
+   # eigenvalue, eigenvector_forcing, eigenvector_response = resolvent(frequency, wavenumber, Jacsurvol, Qq, Qq,    Qvol2inv, P, Dz, Dzz)
+
+Write the optimal gain, forcing and response:
+
+.. code-block:: python
+
+   filename = out_dir + "/eigenval.dat"
+   if rank ==0: __writearray2(filename, eig, freq, wave)
+
+   filename = out_dir + "/response_atcenter_eig_om{:.2}_be{:.2}_n{:d}_real.dat".format(freq, wave, k)
+   __writestate_center_gh(filename, im, jm, w_response, x, y)
+   f_opt = _np.reshape( _np.real(_np.array(eigenvector_forcing[k])), (im,jm,5))
+   filename = out_dir + "/forcing_atcenter_eig_om{:.2}_be{:.2}_n{:d}_real.dat".format(freq, wave, k)
+                  
+Finally run the program with the four arguments:
+
+#. Input .npz setup file.
+#. Output folder.
+#. Frequency :math:`\omega` (remember that this value is then multiplied by :math:`10^{-5}`).
+#. Spanwise wavenumber :math:`\beta` (remember that this value is then multiplied by :math:`10^{-5}`).
+
+For instance in the case of the first Mack mode:
+
+.. code-block:: console
+
+   $ mpirun -np 1 python resolvent_all3D_1block "tree300x150.npz" "./Wksp/firstmackmode" 3. 10.
+
+.. note::
+
+   The ansatz for the optimal response is :math:`q'=\check{q}e^{i(-\omega t + \beta z)}`. In this code, the resolvent operator writes :math:`\mathcal{R}=(i\omega I - A)` therefore from the definition of :math:`A`, one gets :math:`\check{q}=-\mathcal{R}P\check{f}`. Be aware that the output of **resolvent_all3D_1block.py** is :math:`-\check{q}`.
 
 
 Global stability analysis
