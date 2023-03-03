@@ -8,9 +8,15 @@ Base-flow
 To compute the base-flow of a boundary layer, two Python programs should be modified:
 
 #. the card (choice of geometry, physics, solver methods...): **card_bl2d_fv_npz.py**.
-#. the main program (choice of mesh, BC...): **BROADCAST_npz.py**.
+#. the main program (choice of mesh, normalisation, BC...): **BROADCAST_npz.py**.
 
 In this tutorial, we will come through each program step by step to setup a hypersonic boundary layer over an adiabatic flat plate.
+
+When your case is setup, run the program to compute the base-flow:
+
+.. code-block:: console
+
+   $ mpirun -np 1 python card_bl2d_fv_npz.py
 
 card_bl2d_fv_npz.py
 ^^^^^
@@ -286,16 +292,11 @@ In order to study three-dimensional eigenmodes in resolvent or global stability 
 
    fillNPZ_3D(filename, IAdz, JAdz, Jacdz, IAdz2, JAdz2, Jacdz2)
 
-Finally run the program to compute the base-flow:
-
-.. code-block:: console
-
-   $ mpirun -np 1 python card_bl2d_fv_npz.py
 
 Resolvent
 --------
 
-To compute the resolvent analysis of a boundary layer, go to the file **resolvent_all3D_1block.py**.
+To compute the resolvent analysis of a boundary layer, go inside the file **resolvent_all3D_1block.py**.
 
 Specify the equations where to apply forcing:
 
@@ -368,7 +369,7 @@ For instance in the case of the first Mack mode:
 Global stability analysis
 --------
 
-To compute the biglobal stability analysis of a boundary layer, go to the file **biglobal.py**.
+To compute the biglobal stability analysis of a boundary layer, go inside the file **biglobal.py**.
 
 Select the number of eigenvalues to compute:
 
@@ -401,10 +402,10 @@ Finally run the program with the four arguments:
 
 #. Input .npz setup file.
 #. Output folder.
-#. Target eigenvalue, also called shift parameter :math:`s`. It is a complex value. Real part is the growth rate and imaginary part is the frequency.
+#. Target eigenvalue, also called shift parameter :math:`s`. We look for the closest eigenvalue :math:`\lambda` to :math:`s`. It is a complex value. Real part is the growth rate and imaginary part gives the frequency.
 #. Spanwise wavenumber :math:`\beta`.
 
-For instance in the case of the first Mack mode:
+For instance:
 
 .. code-block:: console
 
@@ -412,4 +413,6 @@ For instance in the case of the first Mack mode:
 
 .. note::
 
-   The ansatz for the goblal mode is :math:`q'=\hat{q}e^{i(\lambda t + \beta z)}` with :math:`\lambda=\sigma+i\omega`. From the definition of :math:`A`, one gets :math:`A\hat{q}=-\lambda \hat{q}`. Therefore, unstable global mode have negative real part: :math:`\sigma < 0`.
+   The ansatz for the goblal mode is :math:`q'=\hat{q}e^{i(\lambda t + \beta z)}` with :math:`\lambda=\sigma+i\omega`. From the definition of :math:`A`, one gets :math:`A\hat{q}=-\lambda \hat{q}`. Therefore, unstable global modes have negative real part: :math:`\sigma < 0`.
+
+
