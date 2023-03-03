@@ -37,9 +37,13 @@ Select the number of iterations of your method and the CFL number (for any metho
 .. code-block:: python
 
    ite     = 10
-   cfl     = 0.9
+   cfl     = 1.e10 #very large CFL for Newton method
    freqres = ite/2 # frequency to print residual defined by the integer, here 2
    freqsort= ite/1 # frequency to write solution defined by the integer, here 1
+
+.. note::
+
+   For the Newton method, start with a very large CFL as the scaling of this CFL is not normalised to 1. Try cfl = 1.e10.
 
 Select the order of the convective scheme:
 
@@ -282,6 +286,11 @@ In order to study three-dimensional eigenmodes in resolvent or global stability 
 
    fillNPZ_3D(filename, IAdz, JAdz, Jacdz, IAdz2, JAdz2, Jacdz2)
 
+Finally run the program to compute the base-flow:
+
+.. code-block:: console
+
+   $ mpirun -np 1 python card_bl2d_fv_npz.py
 
 Resolvent
 --------
@@ -349,15 +358,58 @@ For instance in the case of the first Mack mode:
 
 .. code-block:: console
 
-   $ mpirun -np 1 python resolvent_all3D_1block "tree300x150.npz" "./Wksp/firstmackmode" 3. 10.
+   $ mpirun -np 1 python resolvent_all3D_1block "tree300x150.npz" "./Wksp/firstmackmode" 3. 12.
 
 .. note::
 
-   The ansatz for the optimal response is :math:`q'=\check{q}e^{i(-\omega t + \beta z)}`. In this code, the resolvent operator writes :math:`\mathcal{R}=(i\omega I - A)` therefore from the definition of :math:`A`, one gets :math:`\check{q}=-\mathcal{R}P\check{f}`. Be aware that the output of **resolvent_all3D_1block.py** is :math:`-\check{q}`.
+   The ansatz for the optimal response is :math:`q'=\check{q}e^{i(-\omega t + \beta z)}`. In this code, the resolvent operator writes :math:`\mathcal{R}=(i\omega I - A)` therefore from the definition of :math:`A`, one gets :math:`\check{q}=-\mathcal{R}P\check{f}`. Be aware that the output of **resolvent_all3D_1block.py** are :math:`\check{f}` and :math:`-\check{q}`.
 
 
 Global stability analysis
 --------
 
+To compute the biglobal stability analysis of a boundary layer, go to the file **biglobal.py**.
+
+Select the number of eigenvalues to compute:
+
+.. code-block:: python
+
+   ## Number of eigenvalue to compute
+   nev = 1  
+
+Select options for the Krylov-Schur algorithm:
+
+.. code-block:: python
+
+   ## Maximum iterations of the Krylov-Schur method
+   maxits = 30  
+   ## Tolerance of the Krylov-Schur method
+   tol = 1.e-5 
+
+Select by commenting one of the line to solve the direct :math:`A\hat{q}=-\lambda \hat{q}` or the adjoint :math:`A^*\hat{q}=-\lambda \hat{q}` problem. 
+
+.. code-block:: python
+
+   ## OR manual shift-invert - It can compute direct & adjoint modes
+   ## For direct mode
+   A, ksp_A = pet.createShiftInvert(Jac3D, target)
+   ## For adjoint mode
+   # A, ksp_A = pet.createShiftInvert_Transpose(Jac3D, target)
 
 
+Finally run the program with the four arguments:
+
+#. Input .npz setup file.
+#. Output folder.
+#. Target eigenvalue, also called shift parameter :math:`s`. It is a complex value. Real part is the growth rate and imaginary part is the frequency.
+#. Spanwise wavenumber :math:`\beta`.
+
+For instance in the case of the first Mack mode:
+
+.. code-block:: console
+
+   $ mpirun -np 1 python biglobal.py "tree300x150.npz" "./Wksp/globalmode" 0. 0.
+
+.. note::
+
+   The ansatz for the goblal mode is :math:`q'=\hat{q}e^{i(\lambda t + \beta z)}` with :math:`\lambda=\sigma+i\omega`. From the definition of :math:`A`, one gets :math:`A\hat{q}=-\lambda \hat{q}`. Therefore, unstable global mode have negative real part: :math:`\sigma < 0`.
