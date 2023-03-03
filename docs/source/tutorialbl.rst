@@ -413,6 +413,6 @@ For instance:
 
 .. note::
 
-   The ansatz for the goblal mode is :math:`q'=\hat{q}e^{i(-\lambda t + \beta z)}` with :math:`\lambda=\sigma+i\omega`. From the definition of :math:`A`, one gets :math:`A\hat{q}=\lambda \hat{q}`. Therefore, unstable global modes have negative real part: :math:`\sigma < 0`.
+   The ansatz for the goblal mode is :math:`q'=\hat{q}e^{-\lambda t + i\beta z}` with :math:`\lambda=\sigma+i\omega`. From the definition of :math:`A`, one gets :math:`A\hat{q}=\lambda \hat{q}`. Therefore, unstable global modes have negative real part: :math:`\sigma < 0`.
 
 
