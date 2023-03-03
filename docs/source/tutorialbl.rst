@@ -387,7 +387,7 @@ Select options for the Krylov-Schur algorithm:
    ## Tolerance of the Krylov-Schur method
    tol = 1.e-5 
 
-Select by commenting one of the line to solve the direct :math:`A\hat{q}=-\lambda \hat{q}` or the adjoint :math:`A^*\hat{q}=-\lambda \hat{q}` problem. 
+Select by commenting one of the line to solve the direct :math:`A\hat{q}=\lambda \hat{q}` or the adjoint :math:`A^*\hat{q}=\lambda \hat{q}` problem. 
 
 .. code-block:: python
 
@@ -413,6 +413,6 @@ For instance:
 
 .. note::
 
-   The ansatz for the goblal mode is :math:`q'=\hat{q}e^{i(\lambda t + \beta z)}` with :math:`\lambda=\sigma+i\omega`. From the definition of :math:`A`, one gets :math:`A\hat{q}=-\lambda \hat{q}`. Therefore, unstable global modes have negative real part: :math:`\sigma < 0`.
+   The ansatz for the goblal mode is :math:`q'=\hat{q}e^{i(-\lambda t + \beta z)}` with :math:`\lambda=\sigma+i\omega`. From the definition of :math:`A`, one gets :math:`A\hat{q}=\lambda \hat{q}`. Therefore, unstable global modes have negative real part: :math:`\sigma < 0`.
 
 
